@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# pyprd — wrapper that activates venv and loads .env before running cli.py
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+set -a
+[ -f "$SCRIPT_DIR/.env" ] && source "$SCRIPT_DIR/.env"
+set +a
+source "$SCRIPT_DIR/venv/bin/activate"
+exec python3 "$SCRIPT_DIR/cli.py" "$@"
