@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 
 
@@ -24,6 +24,21 @@ class Task:
         self.result = None
         self.error = None
 
+    def start(self, worker_id: str) -> None:
+        self.status = TaskStatus.RUNNING
+        self.assigned_to = worker_id
+        self.started_at = datetime.now(timezone.utc)
+
+    def complete(self, result: str) -> None:
+        self.status = TaskStatus.DONE
+        self.finished_at = datetime.now(timezone.utc)
+        self.result = result
+
+    def fail(self, error: str) -> None:
+        self.status = TaskStatus.FAILED
+        self.error = error
+        self.finished_at = datetime.now(timezone.utc)
+    
     def to_dict(self):
         return {
             "id": self.id,
