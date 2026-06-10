@@ -67,6 +67,9 @@ class Device:
         self.cpu_usage = psutil.cpu_percent(interval=1)
         self.ram_usage = psutil.virtual_memory().percent
         self.swap_usage = psutil.swap_memory().percent
+        self.disk_usage_percent = psutil.disk_usage('/').percent
+        self.running_processes = len(psutil.pids())
+        self.uptime_seconds = int(datetime.now().timestamp() - psutil.boot_time())
 
         temps = psutil.sensors_temperatures() if hasattr(psutil, "sensors_temperatures") else {}
         if temps:
@@ -89,7 +92,7 @@ class Device:
         print(f"  CPU:  {self.cpu_name} ({self.cpu_cores} cores)  |  {self.cpu_usage}%")
         print(f"  RAM:  {self.ram_gb} GB  |  {self.ram_usage}%")
         print(f"  Swap: {self.swap_total_gb} GB  |  {self.swap_usage}%")
-        print(f"  Disk: {self.storage_gb} GB")
+        print(f"  Disk: {self.storage_gb} GB  |  {self.disk_usage_percent}%")
         print(f"  OS:   {self.os}")
         print(f"  IP:   {self.ip_address}")
         print(f"  Net:  {self.network_status}")

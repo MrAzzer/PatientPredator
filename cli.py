@@ -245,10 +245,12 @@ def cmd_rm(args):
         r = _delete(f"/task/{args.id}")
         if r.status_code == 404:
             _die(f"task '{args.id}' not found")
-        print(f"{C.GREEN}deleted{C.RESET} {args.id}")
+        elif r.status_code != 204:
+            _die(f"delete failed ({r.status_code})")
     except Exception as exc:
         _die(f"request failed ({exc})")
 
+    print(f"{C.GREEN}deleted{C.RESET} task {C.BOLD}{args.id}{C.RESET}")
 
 # ── main ──────────────────────────────────────────────────────────────────────
 
